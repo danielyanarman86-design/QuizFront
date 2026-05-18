@@ -8,7 +8,7 @@ import { api } from '@/lib/api';
 
 interface Answer { questionId: string; isCorrect: boolean; selectedOptionIds: string[]; openText?: string; }
 interface Option { id: string; text: string; isCorrect: boolean; order: number; }
-interface Question { id: string; text: string; type: string; points: number; answerOptions: Option[]; }
+interface Question { id: string; text: string; type: string; points: number; order: number; answerOptions: Option[]; }
 interface Result { attempt: any; quiz: { title: string; questions: Question[] }; answers: Answer[]; pct: number; }
 
 export default function ResultsPage() {
