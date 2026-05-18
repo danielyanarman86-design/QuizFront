@@ -19,8 +19,11 @@ api.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error.response?.status === 401 && typeof window !== 'undefined') {
-      localStorage.removeItem('quizrush_token');
-      window.location.href = '/hy/auth/login';
+      const isAuthPage = window.location.pathname.includes('/login') || window.location.pathname.includes('/register');
+      if (!isAuthPage) {
+        localStorage.removeItem('quizrush_token');
+        window.location.href = '/hy/login';
+      }
     }
     return Promise.reject(error);
   },

@@ -39,7 +39,16 @@ export default function LoginPage() {
       setAuth(res.data.user, res.data.accessToken);
       router.push(`/${locale}/dashboard`);
     } catch (e: any) {
-      setError(e.response?.data?.message || 'Login failed');
+      const msg = e.response?.data?.message || 'Login failed';
+      if (msg === 'Account pending approval') {
+        setError('Your account is pending admin approval. Please wait.');
+      } else if (msg === 'Account rejected') {
+        setError('Your account has been rejected. Contact support.');
+      } else if (msg === 'Account banned') {
+        setError('Your account has been banned. Contact support.');
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }
