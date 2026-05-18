@@ -1,0 +1,66 @@
+{
+  "common": {
+    "loading": "Загрузка...",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "back": "Назад",
+    "next": "Далее",
+    "submit": "Отправить",
+    "search": "Поиск",
+    "yes": "Да",
+    "no": "Нет"
+  },
+  "auth": {
+    "login": "Войти",
+    "register": "Регистрация",
+    "logout": "Выйти",
+    "email": "Email",
+    "password": "Пароль",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "role": "Роль",
+    "school": "Школа",
+    "teacher": "Учитель",
+    "student": "Ученик",
+    "loginWithGoogle": "Войти через Google",
+    "noAccount": "Нет аккаунта?",
+    "hasAccount": "Уже есть аккаунт?",
+    "pendingApproval": "Ваш аккаунт ожидает подтверждения",
+    "forgotPassword": "Забыли пароль?"
+  },
+  "dashboard": {
+    "welcome": "Добро пожаловать",
+    "myClasses": "Мои классы",
+    "myQuizzes": "Мои квизы",
+    "statistics": "Статистика",
+    "profile": "Профиль"
+  },
+  "quiz": {
+    "create": "Создать квиз",
+    "title": "Название",
+    "description": "Описание",
+    "category": "Категория",
+    "questions": "Вопросы",
+    "addQuestion": "Добавить вопрос",
+    "startLive": "Запустить Live",
+    "assignToClass": "Назначить классу",
+    "draft": "Черновик",
+    "published": "Опубликован",
+    "archived": "Архивирован"
+  },
+  "live": {
+    "enterPin": "Введите PIN код",
+    "waitingForHost": "Ожидаем ведущего...",
+    "leaderboard": "Лидерборд",
+    "timeLeft": "Осталось времени",
+    "yourScore": "Ваши очки"
+  },
+  "errors": {
+    "notFound": "Страница не найдена",
+    "serverError": "Ошибка сервера",
+    "unauthorized": "Нет доступа",
+    "goHome": "На главную"
+  }
+}

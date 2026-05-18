@@ -1,0 +1,66 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "role": "Role",
+    "school": "School",
+    "teacher": "Teacher",
+    "student": "Student",
+    "loginWithGoogle": "Login with Google",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "pendingApproval": "Your account is pending approval",
+    "forgotPassword": "Forgot password?"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "myClasses": "My Classes",
+    "myQuizzes": "My Quizzes",
+    "statistics": "Statistics",
+    "profile": "Profile"
+  },
+  "quiz": {
+    "create": "Create Quiz",
+    "title": "Title",
+    "description": "Description",
+    "category": "Category",
+    "questions": "Questions",
+    "addQuestion": "Add Question",
+    "startLive": "Start Live",
+    "assignToClass": "Assign to Class",
+    "draft": "Draft",
+    "published": "Published",
+    "archived": "Archived"
+  },
+  "live": {
+    "enterPin": "Enter PIN code",
+    "waitingForHost": "Waiting for host...",
+    "leaderboard": "Leaderboard",
+    "timeLeft": "Time left",
+    "yourScore": "Your score"
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "serverError": "Server error",
+    "unauthorized": "Unauthorized",
+    "goHome": "Go Home"
+  }
+}

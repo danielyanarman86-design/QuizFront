@@ -1,0 +1,66 @@
+{
+  "common": {
+    "loading": "Բեռնվում է...",
+    "save": "Պահպանել",
+    "cancel": "Չեղարկել",
+    "delete": "Ջնջել",
+    "edit": "Խմբագրել",
+    "back": "Վերադառնալ",
+    "next": "Հաջորդ",
+    "submit": "Ուղարկել",
+    "search": "Որոնել",
+    "yes": "Այո",
+    "no": "Ոչ"
+  },
+  "auth": {
+    "login": "Մուտք",
+    "register": "Գրանցում",
+    "logout": "Ելք",
+    "email": "Էլ. փոստ",
+    "password": "Գաղտնաբառ",
+    "firstName": "Անուն",
+    "lastName": "Ազգանուն",
+    "role": "Դեր",
+    "school": "Դպրոց",
+    "teacher": "Ուսուցիչ",
+    "student": "Աշակերտ",
+    "loginWithGoogle": "Մուտք Google-ով",
+    "noAccount": "Հաշիվ չունե՞ք",
+    "hasAccount": "Արդեն հաշիվ ունե՞ք",
+    "pendingApproval": "Ձեր հաշիվը սպասում է հաստատման",
+    "forgotPassword": "Մոռացե՞լ եք գաղտնաբառը"
+  },
+  "dashboard": {
+    "welcome": "Բարի գալուստ",
+    "myClasses": "Իմ դասարանները",
+    "myQuizzes": "Իմ վիկտորինաները",
+    "statistics": "Վիճակագրություն",
+    "profile": "Պրոֆիլ"
+  },
+  "quiz": {
+    "create": "Ստեղծել վիկտորինա",
+    "title": "Վերնագիր",
+    "description": "Նկարագրություն",
+    "category": "Կատեգորիա",
+    "questions": "Հարցեր",
+    "addQuestion": "Ավելացնել հարց",
+    "startLive": "Սկսել Live",
+    "assignToClass": "Հատկացնել դասարանին",
+    "draft": "Սևագիր",
+    "published": "Հրապարակված",
+    "archived": "Արխիվացված"
+  },
+  "live": {
+    "enterPin": "Մուտքագրեք PIN կոդը",
+    "waitingForHost": "Սպասում ենք հաղորդավարին...",
+    "leaderboard": "Լավագույններ",
+    "timeLeft": "Մնացած ժամանակ",
+    "yourScore": "Ձեր միավորները"
+  },
+  "errors": {
+    "notFound": "Էջը չի գտնվել",
+    "serverError": "Սերվերի սխալ",
+    "unauthorized": "Թույլտվություն չկա",
+    "goHome": "Գնալ գլխավոր"
+  }
+}
