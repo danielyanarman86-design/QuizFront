@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Mail, Lock, Zap } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useAuthStore } from '@/store/auth.store';
+import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher';
 
 const schema = z.object({
   email: z.string().email(),
@@ -56,6 +57,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0f0f1a] p-4">
+      <div className="fixed top-4 right-4">
+        <LocaleSwitcher />
+      </div>
       {/* Background glow */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-violet-600/20 blur-3xl" />

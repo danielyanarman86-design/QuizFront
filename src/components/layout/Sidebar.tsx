@@ -11,6 +11,7 @@ import { useAuthStore } from '@/store/auth.store';
 import { getInitials } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher';
 
 export function Sidebar() {
   const t = useTranslations('dashboard');
@@ -93,6 +94,11 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      {/* Locale Switcher */}
+      <div className="px-4 pb-2 flex justify-center">
+        <LocaleSwitcher />
+      </div>
 
       {/* User + Logout */}
       <div className="px-3 py-4 border-t border-white/10 space-y-2">
