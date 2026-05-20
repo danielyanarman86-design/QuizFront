@@ -217,8 +217,8 @@ export default function CreateQuizPage() {
         {questions.map((q, qi) => (
           <motion.div key={qi} layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
             className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
-            <button onClick={() => setOpenIndex(openIndex === qi ? -1 : qi)}
-              className="flex w-full items-center justify-between px-5 py-4 text-left hover:bg-white/5 transition">
+            <div onClick={() => setOpenIndex(openIndex === qi ? -1 : qi)}
+              className="flex w-full items-center justify-between px-5 py-4 text-left hover:bg-white/5 transition cursor-pointer">
               <div className="flex items-center gap-3 min-w-0">
                 <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-blue-600 text-xs font-bold text-white">
                   {qi + 1}
@@ -237,7 +237,7 @@ export default function CreateQuizPage() {
                 </button>
                 {openIndex === qi ? <ChevronUp className="h-4 w-4 text-gray-400" /> : <ChevronDown className="h-4 w-4 text-gray-400" />}
               </div>
-            </button>
+            </div>
 
             <AnimatePresence>
               {openIndex === qi && (
