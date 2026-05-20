@@ -94,6 +94,8 @@
     "bestScore": "Лучший результат",
     "avgScore": "Средний балл",
     "timeSpent": "Время",
+    "liveParticipations": "Live-участия",
+    "liveHistory": "История Live-квизов",
     "noAttempts": "Нет попыток. Начните проходить квизы!",
     "recentAttempts": "Последние попытки"
   },

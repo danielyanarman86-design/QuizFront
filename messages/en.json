@@ -94,6 +94,8 @@
     "bestScore": "Best Score",
     "avgScore": "Avg Score",
     "timeSpent": "Time Spent",
+    "liveParticipations": "Live Participations",
+    "liveHistory": "Live Quiz History",
     "noAttempts": "No quiz attempts yet. Start taking quizzes!",
     "recentAttempts": "Recent Attempts"
   },

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Hash, CheckCircle, Trophy, Clock, WifiOff } from 'lucide-react';
 import { getLiveSocket, disconnectLiveSocket } from '@/lib/socket';
 import { sounds } from '@/lib/sounds';
+import { useAuthStore } from '@/store/auth.store';
 
 type Phase = 'entry' | 'lobby' | 'question' | 'answered' | 'results' | 'finished';
 
@@ -44,6 +45,7 @@ function loadSession(): { pin: string; name: string; score: number } | null {
 
 export default function LivePage() {
   const { locale } = useParams<{ locale: string }>();
+  const authUser = useAuthStore(s => s.user);
 
   const [pin, setPin] = useState('');
   const [name, setName] = useState('');
@@ -151,7 +153,7 @@ export default function LivePage() {
     setError('');
     const socket = getLiveSocket();
     setupSocketListeners(socket, pin, name);
-    socket.emit('player:join', { pin, name });
+    socket.emit('player:join', { pin, name, userId: authUser?.id });
   };
 
   const handleReconnect = () => {
@@ -160,7 +162,7 @@ export default function LivePage() {
     setError('');
     const socket = getLiveSocket();
     setupSocketListeners(socket, saved.pin, saved.name);
-    socket.emit('player:join', { pin: saved.pin, name: saved.name });
+    socket.emit('player:join', { pin: saved.pin, name: saved.name, userId: authUser?.id });
   };
 
   const handleAnswer = (optId: string) => {
