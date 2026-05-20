@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { History, Trophy, ChevronDown, ChevronUp, Users, Clock } from 'lucide-react';
 import axios from 'axios';
@@ -26,6 +27,7 @@ interface SessionResult {
 const api = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 export default function LiveHistoryPage() {
+  const t = useTranslations('liveHistory');
   const token = useAuthStore(s => s.token);
   const headers = { Authorization: `Bearer ${token}` };
 
@@ -66,8 +68,8 @@ export default function LiveHistoryPage() {
           <History className="h-5 w-5 text-white" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-white">Live Session History</h1>
-          <p className="text-sm text-gray-400">All your completed live quiz sessions</p>
+          <h1 className="text-2xl font-bold text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-400">{t('subtitle')}</p>
         </div>
       </div>
 
@@ -78,8 +80,8 @@ export default function LiveHistoryPage() {
       ) : sessions.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 py-20 text-center">
           <History className="mb-4 h-12 w-12 text-gray-600" />
-          <p className="text-gray-400">No live sessions yet</p>
-          <p className="mt-1 text-sm text-gray-600">Start a live quiz from the Assignments page</p>
+          <p className="text-gray-400">{t('noSessions')}</p>
+          <p className="mt-1 text-sm text-gray-600">{t('startFromAssignments')}</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -112,12 +114,12 @@ export default function LiveHistoryPage() {
                           <div className="h-5 w-5 animate-spin rounded-full border-2 border-violet-500 border-t-transparent" />
                         </div>
                       ) : results[s.id].length === 0 ? (
-                        <p className="text-center text-sm text-gray-500">No results recorded</p>
+                        <p className="text-center text-sm text-gray-500">{t('noResults')}</p>
                       ) : (
                         <div className="space-y-2">
                           <div className="mb-3 flex items-center gap-2">
                             <Users className="h-4 w-4 text-gray-400" />
-                            <span className="text-sm text-gray-400">{results[s.id].length} players</span>
+                            <span className="text-sm text-gray-400">{results[s.id].length} {t('players')}</span>
                           </div>
                           {results[s.id].map(r => (
                             <div key={r.id} className={`flex items-center gap-4 rounded-xl px-4 py-3 ${r.rank === 1 ? 'bg-yellow-500/10 border border-yellow-500/20' : 'bg-white/5'}`}>
@@ -126,7 +128,7 @@ export default function LiveHistoryPage() {
                               </span>
                               {r.rank === 1 && <Trophy className="h-4 w-4 text-yellow-400 flex-shrink-0" />}
                               <span className="flex-1 font-medium text-white text-sm">{r.playerName}</span>
-                              <span className="text-xs text-gray-500">{r.correctAnswers}/{r.totalQuestions} correct</span>
+                              <span className="text-xs text-gray-500">{r.correctAnswers}/{r.totalQuestions} {t('correct')}</span>
                               <span className="font-bold text-violet-400">{r.score} pts</span>
                             </div>
                           ))}

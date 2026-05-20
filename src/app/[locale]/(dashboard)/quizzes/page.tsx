@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { BookOpen, Plus, Clock, Tag } from 'lucide-react';
+import { BookOpen, Plus, Tag } from 'lucide-react';
 import { useAuthStore } from '@/store/auth.store';
 import { api } from '@/lib/api';
 
@@ -24,7 +24,8 @@ const statusColors: Record<string, string> = {
 };
 
 export default function QuizzesPage() {
-  const t = useTranslations('quiz');
+  const tQuiz = useTranslations('quiz');
+  const t = useTranslations('quizzes');
   const { locale } = useParams();
   const { user } = useAuthStore();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
@@ -39,14 +40,11 @@ export default function QuizzesPage() {
   return (
     <div className="p-6 md:p-8">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">{t('create').replace('Create ', '')}s</h1>
+        <h1 className="text-2xl font-bold text-white">{t('title')}</h1>
         {isTeacher && (
-          <motion.a
-            href={`/${locale}/quizzes/create`}
-            whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg"
-          >
-            <Plus className="h-4 w-4" /> {t('create')}
+          <motion.a href={`/${locale}/quizzes/create`} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg">
+            <Plus className="h-4 w-4" /> {tQuiz('create')}
           </motion.a>
         )}
       </div>
@@ -60,26 +58,21 @@ export default function QuizzesPage() {
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5">
             <BookOpen className="h-8 w-8 text-gray-500" />
           </div>
-          <p className="text-gray-400">
-            {isTeacher ? 'No quizzes yet. Create your first quiz!' : 'No quizzes assigned to you yet.'}
-          </p>
+          <p className="text-gray-400">{isTeacher ? t('noQuizzesTeacher') : t('noQuizzesStudent')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {quizzes.map((quiz, i) => (
-            <motion.a
-              key={quiz.id}
-              href={`/${locale}/quizzes/${quiz.id}`}
+            <motion.a key={quiz.id} href={`/${locale}/quizzes/${quiz.id}`}
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
               whileHover={{ scale: 1.02, y: -3 }}
-              className="group rounded-2xl border border-white/10 bg-white/5 p-5 hover:border-violet-500/40 transition-all cursor-pointer"
-            >
+              className="group rounded-2xl border border-white/10 bg-white/5 p-5 hover:border-violet-500/40 transition-all cursor-pointer">
               <div className="mb-3 flex items-start justify-between">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600">
                   <BookOpen className="h-5 w-5 text-white" />
                 </div>
                 <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusColors[quiz.status] || ''}`}>
-                  {t(quiz.status as any)}
+                  {tQuiz(quiz.status as any)}
                 </span>
               </div>
               <h3 className="font-semibold text-white group-hover:text-violet-300 transition">{quiz.title}</h3>

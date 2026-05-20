@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import {
   Users, BookOpen, BarChart3, ClipboardList, Trophy,
@@ -29,6 +30,7 @@ export default function DashboardPage() {
   const { locale } = useParams<{ locale: string }>();
   const router = useRouter();
   const { user } = useAuthStore();
+  const t = useTranslations('dashboard');
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,35 +49,33 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 md:p-8">
-      {/* Header */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <h1 className="text-3xl font-bold text-white">
-          Welcome back,{' '}
+          {t('welcomeBack')}{' '}
           <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
             {user?.firstName}
           </span>{' '}👋
         </h1>
-        <p className="mt-1 text-gray-400 capitalize">{user?.role} account</p>
+        <p className="mt-1 text-gray-400 capitalize">{user?.role} {t('account')}</p>
       </motion.div>
 
-      {data?.role === 'teacher' ? <TeacherView data={data} locale={locale} router={router} /> : null}
-      {data?.role === 'student' ? <StudentView data={data} locale={locale} router={router} /> : null}
-      {!data && <FallbackCards locale={locale} role={user?.role} />}
+      {data?.role === 'teacher' ? <TeacherView data={data} locale={locale} router={router} t={t} /> : null}
+      {data?.role === 'student' ? <StudentView data={data} locale={locale} router={router} t={t} /> : null}
+      {!data && <FallbackCards locale={locale} role={user?.role} t={t} />}
     </div>
   );
 }
 
-function TeacherView({ data, locale, router }: { data: TeacherDashboard; locale: string; router: any }) {
+function TeacherView({ data, locale, router, t }: { data: TeacherDashboard; locale: string; router: any; t: any }) {
   const statCards = [
-    { icon: Users, label: 'Classes', value: data.stats.totalClasses, color: 'from-violet-600 to-purple-600', href: `/${locale}/classes` },
-    { icon: Users, label: 'Students', value: data.stats.totalStudents, color: 'from-blue-600 to-cyan-600', href: `/${locale}/classes` },
-    { icon: BookOpen, label: 'Quizzes', value: data.stats.totalQuizzes, color: 'from-emerald-600 to-teal-600', href: `/${locale}/quizzes` },
-    { icon: ClipboardList, label: 'Assignments', value: data.stats.totalAssignments, color: 'from-orange-600 to-rose-600', href: `/${locale}/assignments` },
+    { icon: Users, label: t('classes'), value: data.stats.totalClasses, color: 'from-violet-600 to-purple-600', href: `/${locale}/classes` },
+    { icon: Users, label: t('students'), value: data.stats.totalStudents, color: 'from-blue-600 to-cyan-600', href: `/${locale}/classes` },
+    { icon: BookOpen, label: t('quizzes'), value: data.stats.totalQuizzes, color: 'from-emerald-600 to-teal-600', href: `/${locale}/quizzes` },
+    { icon: ClipboardList, label: t('assignments'), value: data.stats.totalAssignments, color: 'from-orange-600 to-rose-600', href: `/${locale}/assignments` },
   ];
 
   return (
     <div className="space-y-6">
-      {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, i) => (
           <motion.div key={card.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
@@ -91,19 +91,18 @@ function TeacherView({ data, locale, router }: { data: TeacherDashboard; locale:
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent assignments */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           className="rounded-2xl border border-white/10 bg-white/5 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-white flex items-center gap-2">
-              <ClipboardList className="h-4 w-4 text-violet-400" /> Recent Assignments
+              <ClipboardList className="h-4 w-4 text-violet-400" /> {t('recentAssignments')}
             </h2>
             <button onClick={() => router.push(`/${locale}/assignments`)} className="text-xs text-gray-500 hover:text-violet-400 transition">
-              View all →
+              {t('viewAll')}
             </button>
           </div>
           {data.recentAssignments.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No assignments yet</p>
+            <p className="py-6 text-center text-sm text-gray-500">{t('noAssignmentsYet')}</p>
           ) : (
             <div className="space-y-2">
               {data.recentAssignments.map(a => (
@@ -115,7 +114,7 @@ function TeacherView({ data, locale, router }: { data: TeacherDashboard; locale:
                   </div>
                   {a.deadline && (
                     <span className={`text-xs font-medium px-2 py-1 rounded-lg ${new Date(a.deadline) < new Date() ? 'bg-red-500/15 text-red-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
-                      {new Date(a.deadline) < new Date() ? 'Overdue' : `Due ${new Date(a.deadline).toLocaleDateString()}`}
+                      {new Date(a.deadline) < new Date() ? t('overdue') : `${t('due')} ${new Date(a.deadline).toLocaleDateString()}`}
                     </span>
                   )}
                 </div>
@@ -124,14 +123,13 @@ function TeacherView({ data, locale, router }: { data: TeacherDashboard; locale:
           )}
         </motion.div>
 
-        {/* Top students */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
           className="rounded-2xl border border-white/10 bg-white/5 p-5">
           <h2 className="mb-4 font-semibold text-white flex items-center gap-2">
-            <Trophy className="h-4 w-4 text-yellow-400" /> Top Students
+            <Trophy className="h-4 w-4 text-yellow-400" /> {t('topStudents')}
           </h2>
           {data.topStudents.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No completed quizzes yet</p>
+            <p className="py-6 text-center text-sm text-gray-500">{t('noCompletedQuizzes')}</p>
           ) : (
             <div className="space-y-2">
               {data.topStudents.map((s, i) => (
@@ -142,7 +140,7 @@ function TeacherView({ data, locale, router }: { data: TeacherDashboard; locale:
                   <span className="flex-1 text-sm font-medium text-white">{s.name}</span>
                   <div className="text-right">
                     <p className="text-sm font-bold text-violet-400">{s.avgPct}%</p>
-                    <p className="text-xs text-gray-500">{s.attempts} quiz{s.attempts !== 1 ? 'zes' : ''}</p>
+                    <p className="text-xs text-gray-500">{s.attempts}</p>
                   </div>
                 </div>
               ))}
@@ -151,13 +149,12 @@ function TeacherView({ data, locale, router }: { data: TeacherDashboard; locale:
         </motion.div>
       </div>
 
-      {/* Quick actions */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
         className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
-          { label: 'Create Quiz', icon: BookOpen, color: 'from-violet-600 to-blue-600', href: `/${locale}/quizzes/create` },
-          { label: 'View Live History', icon: Radio, color: 'from-rose-600 to-orange-600', href: `/${locale}/live-history` },
-          { label: 'Statistics', icon: BarChart3, color: 'from-emerald-600 to-teal-600', href: `/${locale}/statistics` },
+          { label: t('createQuiz'), icon: BookOpen, color: 'from-violet-600 to-blue-600', href: `/${locale}/quizzes/create` },
+          { label: t('viewLiveHistory'), icon: Radio, color: 'from-rose-600 to-orange-600', href: `/${locale}/live-history` },
+          { label: t('statistics'), icon: BarChart3, color: 'from-emerald-600 to-teal-600', href: `/${locale}/statistics` },
         ].map(action => (
           <button key={action.label} onClick={() => router.push(action.href)}
             className={`flex items-center gap-3 rounded-2xl bg-gradient-to-r ${action.color} px-5 py-4 font-semibold text-white hover:opacity-90 transition`}>
@@ -170,17 +167,16 @@ function TeacherView({ data, locale, router }: { data: TeacherDashboard; locale:
   );
 }
 
-function StudentView({ data, locale, router }: { data: StudentDashboard; locale: string; router: any }) {
+function StudentView({ data, locale, router, t }: { data: StudentDashboard; locale: string; router: any; t: any }) {
   const statCards = [
-    { icon: CheckCircle, label: 'Completed', value: data.stats.totalAttempts, color: 'from-violet-600 to-purple-600' },
-    { icon: TrendingUp, label: 'Avg Score', value: `${data.stats.avgScore}%`, color: 'from-blue-600 to-cyan-600' },
-    { icon: Trophy, label: 'Best Score', value: `${data.stats.bestScore}%`, color: 'from-yellow-600 to-orange-600' },
-    { icon: AlertCircle, label: 'Pending', value: data.stats.pendingAssignments, color: 'from-rose-600 to-red-600' },
+    { icon: CheckCircle, label: t('completed'), value: data.stats.totalAttempts, color: 'from-violet-600 to-purple-600' },
+    { icon: TrendingUp, label: t('avgScore'), value: `${data.stats.avgScore}%`, color: 'from-blue-600 to-cyan-600' },
+    { icon: Trophy, label: t('bestScore'), value: `${data.stats.bestScore}%`, color: 'from-yellow-600 to-orange-600' },
+    { icon: AlertCircle, label: t('assignments'), value: data.stats.pendingAssignments, color: 'from-rose-600 to-red-600' },
   ];
 
   return (
     <div className="space-y-6">
-      {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, i) => (
           <motion.div key={card.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
@@ -194,12 +190,11 @@ function StudentView({ data, locale, router }: { data: StudentDashboard; locale:
         ))}
       </div>
 
-      {/* Score progress bar */}
       {data.stats.totalAttempts > 0 && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           className="rounded-2xl border border-white/10 bg-white/5 p-5">
           <div className="mb-2 flex items-center justify-between">
-            <p className="text-sm text-gray-400">Average Performance</p>
+            <p className="text-sm text-gray-400">{t('averagePerformance')}</p>
             <p className="font-bold text-white">{data.stats.avgScore}%</p>
           </div>
           <div className="h-2.5 rounded-full bg-white/10">
@@ -214,19 +209,18 @@ function StudentView({ data, locale, router }: { data: StudentDashboard; locale:
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent attempts */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
           className="rounded-2xl border border-white/10 bg-white/5 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-white flex items-center gap-2">
-              <Clock className="h-4 w-4 text-violet-400" /> Recent Activity
+              <Clock className="h-4 w-4 text-violet-400" /> {t('recentActivity')}
             </h2>
             <button onClick={() => router.push(`/${locale}/statistics`)} className="text-xs text-gray-500 hover:text-violet-400 transition">
-              View all →
+              {t('viewAll')}
             </button>
           </div>
           {data.recentAttempts.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No quizzes taken yet. Start one!</p>
+            <p className="py-6 text-center text-sm text-gray-500">{t('noQuizzesTaken')}</p>
           ) : (
             <div className="space-y-2">
               {data.recentAttempts.map(a => (
@@ -244,15 +238,14 @@ function StudentView({ data, locale, router }: { data: StudentDashboard; locale:
           )}
         </motion.div>
 
-        {/* Quick actions */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
           className="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <h2 className="mb-4 font-semibold text-white">Quick Actions</h2>
+          <h2 className="mb-4 font-semibold text-white">{t('quickActions')}</h2>
           <div className="space-y-3">
             {[
-              { label: 'My Assignments', icon: ClipboardList, color: 'from-violet-600 to-blue-600', href: `/${locale}/assignments` },
-              { label: 'Join Live Quiz', icon: Play, color: 'from-rose-600 to-orange-600', href: `/${locale}/live` },
-              { label: 'View Statistics', icon: BarChart3, color: 'from-emerald-600 to-teal-600', href: `/${locale}/statistics` },
+              { label: t('myAssignments'), icon: ClipboardList, color: 'from-violet-600 to-blue-600', href: `/${locale}/assignments` },
+              { label: t('joinLiveQuiz'), icon: Play, color: 'from-rose-600 to-orange-600', href: `/${locale}/live` },
+              { label: t('viewStatistics'), icon: BarChart3, color: 'from-emerald-600 to-teal-600', href: `/${locale}/statistics` },
             ].map(action => (
               <button key={action.label} onClick={() => router.push(action.href)}
                 className={`w-full flex items-center gap-3 rounded-2xl bg-gradient-to-r ${action.color} px-5 py-3.5 font-semibold text-white hover:opacity-90 transition`}>
@@ -267,18 +260,18 @@ function StudentView({ data, locale, router }: { data: StudentDashboard; locale:
   );
 }
 
-function FallbackCards({ locale, role }: { locale: string; role?: string }) {
+function FallbackCards({ locale, role, t }: { locale: string; role?: string; t: any }) {
   const isTeacher = role === 'teacher';
   const cards = isTeacher
     ? [
-        { icon: Users, label: 'My Classes', href: `/${locale}/classes`, color: 'from-violet-600 to-purple-600' },
-        { icon: BookOpen, label: 'My Quizzes', href: `/${locale}/quizzes`, color: 'from-blue-600 to-cyan-600' },
-        { icon: BarChart3, label: 'Statistics', href: `/${locale}/statistics`, color: 'from-emerald-600 to-teal-600' },
+        { icon: Users, label: t('myClasses'), href: `/${locale}/classes`, color: 'from-violet-600 to-purple-600' },
+        { icon: BookOpen, label: t('myQuizzes'), href: `/${locale}/quizzes`, color: 'from-blue-600 to-cyan-600' },
+        { icon: BarChart3, label: t('statistics'), href: `/${locale}/statistics`, color: 'from-emerald-600 to-teal-600' },
       ]
     : [
-        { icon: ClipboardList, label: 'Assignments', href: `/${locale}/assignments`, color: 'from-violet-600 to-blue-600' },
-        { icon: BarChart3, label: 'Statistics', href: `/${locale}/statistics`, color: 'from-emerald-600 to-teal-600' },
-        { icon: Play, label: 'Live Quiz', href: `/${locale}/live`, color: 'from-orange-600 to-rose-600' },
+        { icon: ClipboardList, label: t('assignments'), href: `/${locale}/assignments`, color: 'from-violet-600 to-blue-600' },
+        { icon: BarChart3, label: t('statistics'), href: `/${locale}/statistics`, color: 'from-emerald-600 to-teal-600' },
+        { icon: Play, label: t('liveQuiz'), href: `/${locale}/live`, color: 'from-orange-600 to-rose-600' },
       ];
 
   return (

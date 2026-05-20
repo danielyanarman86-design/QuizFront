@@ -11,7 +11,10 @@ import { getInitials } from '@/lib/utils';
 type Toast = { type: 'success' | 'error'; message: string } | null;
 
 export default function ProfilePage() {
-  const t = useTranslations();
+  const t = useTranslations('profile');
+  const tAuth = useTranslations('auth');
+  const tCommon = useTranslations('common');
+  const tDash = useTranslations('dashboard');
   const { user, setAuth, token } = useAuthStore();
   const [form, setForm] = useState({
     firstName: user?.firstName || '',
@@ -46,11 +49,11 @@ export default function ProfilePage() {
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (pwForm.newPassword !== pwForm.confirmPassword) {
-      showToast('error', 'New passwords do not match');
+      showToast('error', t('passwordMismatch'));
       return;
     }
     if (pwForm.newPassword.length < 6) {
-      showToast('error', 'Password must be at least 6 characters');
+      showToast('error', t('passwordTooShort'));
       return;
     }
     setSavingPw(true);
@@ -59,10 +62,10 @@ export default function ProfilePage() {
         currentPassword: pwForm.currentPassword,
         newPassword: pwForm.newPassword,
       });
-      showToast('success', 'Password changed successfully');
+      showToast('success', t('passwordChanged'));
       setPwForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (err: any) {
-      showToast('error', err?.response?.data?.message || 'Failed to change password');
+      showToast('error', err?.response?.data?.message || t('passwordChangeFailed'));
     } finally {
       setSavingPw(false);
     }
@@ -81,25 +84,15 @@ export default function ProfilePage() {
           <span className="text-sm font-medium">{toast.message}</span>
         </motion.div>
       )}
-      <motion.h1
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-6 text-2xl font-bold text-white"
-      >
-        {t('dashboard.profile')}
+      <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 text-2xl font-bold text-white">
+        {tDash('profile')}
       </motion.h1>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm"
-      >
-        {/* Avatar */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
         <div className="mb-6 flex items-center gap-4">
-          <div
-            className="flex h-20 w-20 items-center justify-center rounded-2xl text-2xl font-black text-white"
-            style={{ backgroundColor: user.avatarColor || '#6366f1' }}
-          >
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl text-2xl font-black text-white"
+            style={{ backgroundColor: user.avatarColor || '#6366f1' }}>
             {user.avatar
               ? <img src={user.avatar} className="h-20 w-20 rounded-2xl object-cover" />
               : getInitials(user.firstName, user.lastName)
@@ -118,99 +111,72 @@ export default function ProfilePage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="mb-1.5 flex items-center gap-1.5 text-sm text-gray-400">
-                <User className="h-3.5 w-3.5" /> {t('auth.firstName')}
+                <User className="h-3.5 w-3.5" /> {tAuth('firstName')}
               </label>
-              <input
-                value={form.firstName}
-                onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-violet-500 transition"
-              />
+              <input value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-violet-500 transition" />
             </div>
             <div>
               <label className="mb-1.5 flex items-center gap-1.5 text-sm text-gray-400">
-                <User className="h-3.5 w-3.5" /> {t('auth.lastName')}
+                <User className="h-3.5 w-3.5" /> {tAuth('lastName')}
               </label>
-              <input
-                value={form.lastName}
-                onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-violet-500 transition"
-              />
+              <input value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-violet-500 transition" />
             </div>
           </div>
 
           <div>
             <label className="mb-1.5 flex items-center gap-1.5 text-sm text-gray-400">
-              <Mail className="h-3.5 w-3.5" /> {t('auth.email')}
+              <Mail className="h-3.5 w-3.5" /> {tAuth('email')}
             </label>
-            <input
-              value={user.email}
-              disabled
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-gray-500 cursor-not-allowed"
-            />
+            <input value={user.email} disabled
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-gray-500 cursor-not-allowed" />
           </div>
 
           <div>
             <label className="mb-1.5 flex items-center gap-1.5 text-sm text-gray-400">
-              <Globe className="h-3.5 w-3.5" /> Language
+              <Globe className="h-3.5 w-3.5" /> {t('language')}
             </label>
-            <select
-              value={form.preferredLocale}
-              onChange={(e) => setForm({ ...form, preferredLocale: e.target.value as any })}
-              className="w-full rounded-xl border border-white/10 bg-[#1a1a2e] px-4 py-2.5 text-white outline-none focus:border-violet-500 transition"
-            >
+            <select value={form.preferredLocale} onChange={(e) => setForm({ ...form, preferredLocale: e.target.value as any })}
+              className="w-full rounded-xl border border-white/10 bg-[#1a1a2e] px-4 py-2.5 text-white outline-none focus:border-violet-500 transition">
               <option value="hy">Հայերեն</option>
               <option value="ru">Русский</option>
               <option value="en">English</option>
             </select>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
-            type="submit"
-            disabled={saving}
+          <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} type="submit" disabled={saving}
             className={`flex items-center gap-2 rounded-xl px-6 py-2.5 font-semibold text-white transition-all ${
-              saved
-                ? 'bg-emerald-600'
-                : 'bg-gradient-to-r from-violet-600 to-blue-600 shadow-lg shadow-violet-500/25'
-            } disabled:opacity-60`}
-          >
+              saved ? 'bg-emerald-600' : 'bg-gradient-to-r from-violet-600 to-blue-600 shadow-lg shadow-violet-500/25'
+            } disabled:opacity-60`}>
             <Save className="h-4 w-4" />
-            {saved ? 'Saved!' : saving ? '...' : t('common.save')}
+            {saved ? tCommon('saved') : saving ? tCommon('saving') : tCommon('save')}
           </motion.button>
         </form>
       </motion.div>
 
-      {/* Change Password */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
         className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
         <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
           <Lock className="h-4 w-4 text-violet-400" />
-          Change Password
+          {t('changePassword')}
         </div>
         <form onSubmit={handleChangePassword} className="space-y-4">
-          {(['currentPassword', 'newPassword', 'confirmPassword'] as const).map((field) => (
-            <div key={field}>
-              <label className="mb-1.5 block text-sm text-gray-400 capitalize">
-                {field === 'currentPassword' ? 'Current Password' : field === 'newPassword' ? 'New Password' : 'Confirm New Password'}
-              </label>
-              <input
-                type="password"
-                value={pwForm[field]}
-                onChange={e => setPwForm({ ...pwForm, [field]: e.target.value })}
-                required
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-violet-500 transition"
-              />
+          {([
+            { key: 'currentPassword', label: t('currentPassword') },
+            { key: 'newPassword', label: t('newPassword') },
+            { key: 'confirmPassword', label: t('confirmPassword') },
+          ] as const).map(({ key, label }) => (
+            <div key={key}>
+              <label className="mb-1.5 block text-sm text-gray-400">{label}</label>
+              <input type="password" value={pwForm[key]} onChange={e => setPwForm({ ...pwForm, [key]: e.target.value })} required
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-violet-500 transition" />
             </div>
           ))}
-          <motion.button
-            whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
-            type="submit"
-            disabled={savingPw}
-            className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-2.5 font-semibold text-white hover:bg-white/10 disabled:opacity-60 transition"
-          >
+          <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} type="submit" disabled={savingPw}
+            className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-2.5 font-semibold text-white hover:bg-white/10 disabled:opacity-60 transition">
             <Lock className="h-4 w-4" />
-            {savingPw ? 'Saving...' : 'Change Password'}
+            {savingPw ? tCommon('saving') : t('changePassword')}
           </motion.button>
         </form>
       </motion.div>

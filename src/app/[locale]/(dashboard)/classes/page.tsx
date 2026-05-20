@@ -17,7 +17,9 @@ interface Class {
 }
 
 export default function ClassesPage() {
-  const t = useTranslations('dashboard');
+  const tDash = useTranslations('dashboard');
+  const t = useTranslations('classes');
+  const tCommon = useTranslations('common');
   const { locale } = useParams();
   const { user } = useAuthStore();
   const [classes, setClasses] = useState<Class[]>([]);
@@ -62,14 +64,14 @@ export default function ClassesPage() {
   return (
     <div className="p-6 md:p-8">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">{t('myClasses')}</h1>
+        <h1 className="text-2xl font-bold text-white">{tDash('myClasses')}</h1>
         {isTeacher && (
           <motion.button
             whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
             onClick={() => setShowForm(!showForm)}
             className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2 text-sm font-medium text-white shadow-lg"
           >
-            <Plus className="h-4 w-4" /> Create Class
+            <Plus className="h-4 w-4" /> {t('createClass')}
           </motion.button>
         )}
       </div>
@@ -82,19 +84,19 @@ export default function ClassesPage() {
         >
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="mb-1.5 block text-sm text-gray-400">Class Name</label>
+              <label className="mb-1.5 block text-sm text-gray-400">{t('className')}</label>
               <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
                 className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-violet-500 transition" />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm text-gray-400">Description</label>
+              <label className="mb-1.5 block text-sm text-gray-400">{t('description')}</label>
               <input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
                 className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-violet-500 transition" />
             </div>
           </div>
           <div className="flex gap-3">
-            <button type="submit" className="rounded-xl bg-violet-600 px-6 py-2 text-sm font-medium text-white hover:bg-violet-500 transition">Save</button>
-            <button type="button" onClick={() => setShowForm(false)} className="rounded-xl border border-white/10 px-6 py-2 text-sm text-gray-400 hover:text-white transition">Cancel</button>
+            <button type="submit" className="rounded-xl bg-violet-600 px-6 py-2 text-sm font-medium text-white hover:bg-violet-500 transition">{tCommon('save')}</button>
+            <button type="button" onClick={() => setShowForm(false)} className="rounded-xl border border-white/10 px-6 py-2 text-sm text-gray-400 hover:text-white transition">{tCommon('cancel')}</button>
           </div>
         </motion.form>
       )}
@@ -104,10 +106,10 @@ export default function ClassesPage() {
           <div className="relative flex-1 max-w-xs">
             <Hash className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
             <input value={inviteCode} onChange={(e) => setInviteCode(e.target.value)}
-              placeholder="Enter invite code..."
+              placeholder={t('enterInviteCode')}
               className="w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 py-2.5 text-white outline-none focus:border-violet-500 transition" />
           </div>
-          <button type="submit" className="rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-2.5 text-sm font-medium text-white">Join Class</button>
+          <button type="submit" className="rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-2.5 text-sm font-medium text-white">{t('joinClass')}</button>
         </form>
       )}
 
@@ -120,7 +122,7 @@ export default function ClassesPage() {
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5">
             <Users className="h-8 w-8 text-gray-500" />
           </div>
-          <p className="text-gray-400">{isTeacher ? 'No classes yet. Create your first class!' : 'You are not in any class yet. Enter an invite code.'}</p>
+          <p className="text-gray-400">{isTeacher ? t('noClassesTeacher') : t('noClassesStudent')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

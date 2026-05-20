@@ -44,8 +44,8 @@ export function Sidebar() {
     { href: `/${locale}/dashboard`, label: t('welcome'), icon: LayoutDashboard, roles: ['teacher', 'student'] },
     { href: `/${locale}/classes`, label: t('myClasses'), icon: Users, roles: ['teacher', 'student'] },
     { href: `/${locale}/quizzes`, label: t('myQuizzes'), icon: BookOpen, roles: ['teacher'] },
-    { href: `/${locale}/assignments`, label: 'Assignments', icon: ClipboardList, roles: ['teacher', 'student'] },
-    { href: `/${locale}/live-history`, label: 'Live History', icon: History, roles: ['teacher'] },
+    { href: `/${locale}/assignments`, label: t('assignments'), icon: ClipboardList, roles: ['teacher', 'student'] },
+    { href: `/${locale}/live-history`, label: t('liveHistory'), icon: History, roles: ['teacher'] },
     { href: `/${locale}/statistics`, label: t('statistics'), icon: BarChart3, roles: ['teacher', 'student'] },
     { href: `/${locale}/profile`, label: t('profile'), icon: User, roles: ['teacher', 'student'] },
   ].filter((l) => l.roles.includes(user?.role || ''));

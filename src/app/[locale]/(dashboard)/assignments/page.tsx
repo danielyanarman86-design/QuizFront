@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { BookOpen, Play, Clock, Radio, BarChart2 } from 'lucide-react';
 import { api } from '@/lib/api';
@@ -17,6 +18,7 @@ interface Assignment {
 export default function AssignmentsPage() {
   const { locale } = useParams<{ locale: string }>();
   const router = useRouter();
+  const t = useTranslations('assignments');
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState<string | null>(null);
@@ -45,7 +47,7 @@ export default function AssignmentsPage() {
   return (
     <div className="p-6 md:p-8">
       <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 text-2xl font-bold text-white">
-        My Assignments
+        {t('title')}
       </motion.h1>
 
       {loading ? (
@@ -57,8 +59,8 @@ export default function AssignmentsPage() {
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5">
             <BookOpen className="h-8 w-8 text-gray-500" />
           </div>
-          <p className="text-gray-400">No quizzes assigned yet.</p>
-          <p className="mt-1 text-sm text-gray-500">Ask your teacher to assign a quiz to your class.</p>
+          <p className="text-gray-400">{t('noAssignments')}</p>
+          <p className="mt-1 text-sm text-gray-500">{t('askTeacher')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -78,10 +80,10 @@ export default function AssignmentsPage() {
 
               <div className="flex items-center gap-3 text-xs text-gray-500 mb-4">
                 {a.quiz?.questions && (
-                  <span className="flex items-center gap-1"><BookOpen className="h-3 w-3" /> {a.quiz.questions.length} questions</span>
+                  <span className="flex items-center gap-1"><BookOpen className="h-3 w-3" /> {a.quiz.questions.length} {t('questions')}</span>
                 )}
                 {a.deadline && (
-                  <span className="flex items-center gap-1 text-yellow-500"><Clock className="h-3 w-3" /> Due {new Date(a.deadline).toLocaleDateString()}</span>
+                  <span className="flex items-center gap-1 text-yellow-500"><Clock className="h-3 w-3" /> {t('due')} {new Date(a.deadline).toLocaleDateString()}</span>
                 )}
               </div>
 
@@ -90,7 +92,7 @@ export default function AssignmentsPage() {
                   isOverdue(a.deadline) ? (
                     <div className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 py-2.5 text-sm font-semibold text-red-400">
                       <Clock className="h-4 w-4" />
-                      Overdue
+                      {t('overdue')}
                     </div>
                   ) : (
                   <motion.button
@@ -100,7 +102,7 @@ export default function AssignmentsPage() {
                     className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 py-2.5 text-sm font-semibold text-white shadow-lg disabled:opacity-60 transition"
                   >
                     <Play className="h-4 w-4" />
-                    {starting === a.id ? 'Starting...' : 'Start'}
+                    {starting === a.id ? t('starting') : t('start')}
                   </motion.button>
                   )
                 ) : (
@@ -111,7 +113,7 @@ export default function AssignmentsPage() {
                       className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-600 to-orange-600 py-2.5 text-sm font-semibold text-white shadow-lg transition"
                     >
                       <Radio className="h-4 w-4" />
-                      Live
+                      {t('live')}
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
