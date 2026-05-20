@@ -6,5 +6,3 @@ export default function RootLayout({
   return children;
 }
 
-// Suppress Next.js 16 warning — html/body are in [locale]/layout.tsx
-export const dynamic = 'force-dynamic';
